@@ -1,0 +1,64 @@
+{% extends "complaint/complaint_base.html" %}
+
+{% block complaint_content %}
+
+<header id="main-header" class="py-2 bg-danger text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fas fa-clipboard-list"></i>&nbsp;&nbsp; Complaints</h1>
+                </div>
+            </div>
+        </div>
+    </header><br><br>
+
+<section id="posts">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4>List</h4>
+                </div>
+                <table class="table table-striped">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>#</th>
+                      <th>Type</th>
+                      
+                      <th>Constituency No.</th>
+                      <th>Booth No.</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+    {% for com in complaint_list %}
+    <tr>
+        
+        <td># </td>
+        <td>{{com.choice}} </td>
+        <td>{{com.user.voter_details.cons_no}}</td>
+        <td>{{com.user.voter_details.booth_no}}</td>
+        <td>
+            {% if com.viewed_complaint == 0 %}
+            <h6>Unseen</h6>
+            {% else %}
+            <p><i>Seen</i></p>
+            {% endif %}
+        </td>
+        
+        <td>
+            <a href="{% url 'complaints:update_view' pk=com.pk %}" class="btn btn-secondary">
+            <i class="fas fa-angle-double-right"></i> Details
+            </a>
+        </td>
+
+    </tr>       
+        {% endfor %}
+        </tbody></table></div></div></div></div></section>
+   
+    
+{% endblock %}
+

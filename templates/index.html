@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+<script>
+        var jsonobject = JSON.parse('{{ jsondata | escapejs }}');
+        console.log(jsonobject);
+</script>
+{% if not user.is_authenticated %}
+<header id="main-header" class="py-2 bg-primary text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fas fa-home"></i>&nbsp;&nbsp;Home</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endif %}
+
+{% if user.is_authenticated %}
+
+
+
+<header id="main-header" class="py-2 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>
+                    <i class="fas fa-cog"></i> Dashboard</h1>
+            </div>
+        </div>
+    </div>
+</header>
+<section id="actions" class="py-4 mb-4 bg-light">
+    <div class="container">
+        <div class="row">
+            {% block government %}
+            {% if not user.username in govname_list %}
+            <div class="col-md-4">
+                    <a href="#" class="btn btn-danger btn-block" data-toggle="modal" data-target="#viewDetailsModal">
+                      <i class="fas fa-plus"></i> View Details
+                    </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'complaints:create' %}" class="btn btn-primary btn-block">
+                    <i class="fas fa-plus"></i> Create New Complaint
+                </a>
+            </div>
+            
+            <div class="col-md-4">
+                <a href="{% url 'complaints:user_complaints' username=user.username %}"
+                    class="btn btn-success btn-block">
+                    <i class="fas fa-plus"></i> My Complaints
+                </a>
+            </div>
+            
+            {% endif %}
+            {% endblock %}
+            {% if user.is_authenticated and user.username in govname_list %}
+            <div class="col-md-4">
+                <a href="{% url 'complaints:get_type_num' %}" class="btn btn-primary btn-block">
+                    <i class="fas fa-plus"></i> View Complaint List
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'accounts:add_user' %}" class="btn btn-warning btn-block">
+                    <i class="fas fa-plus"></i> Add User
+                </a>
+            </div>
+            {% if user.gov.is_supergov %}
+            <div class="col-md-4">
+                <a href="{% url 'accounts:add_gov_user' %}" class="btn btn-success btn-block">
+                    <i class="fas fa-plus"></i> Add Gov User
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><br><br>
+                <a href="{% url 'accounts:add_constituency' %}" class="btn btn-primary btn-block">
+                    <i class="fas fa-plus"></i> Add Constituency
+                </a>
+            </div>
+            <div class="col-md-4"><br><br>
+                <a href="{% url 'accounts:add_complaint_type' %}" class="btn btn-danger btn-block">
+                    <i class="fas fa-plus"></i> Add Complaint Type
+                </a>
+            </div>
+            <div class="col-md-4"><br><br>
+                <a href="{% url 'accounts:update_constituency' %}" class="btn btn-success btn-block">
+                    <i class="fas fa-plus"></i> Update Constituency
+                </a>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="viewDetailsModal">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title">Details</h5>
+              <button class="close" data-dismiss="modal">
+                <span>&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h3 align="center">Username: {{user.username}}</h3>
+              <h4 align="center">Constituency Number: {{user.voter_details.cons_no}}</h4>
+              <h4 align="center">Booth Number: {{user.voter_details.booth_no}}</h4>
+              <h4 align="center">Phone Number: {{user.voter_details.phone_num}}</h4>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+
+{% endif %}
+
+<div class="row bg-light">
+    <br>
+</div>
+
+    <div class="row">
+        <div class="col-md-5 bg-light">
+                
+                <div class="card text-center bg-light text-muted mb-3 mr-3">
+                        <div class="card-body">
+                                <h2>Country's Response</h2><br>
+                                <canvas id="myChart" width="22" height="15"></canvas>
+        
+                        </div>
+                    </div>
+                
+                <script>
+                    var ctx = document.getElementById("myChart").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels:['Likes','Dislikes'],
+                            datasets: [{
+                                label: '# of Complaints',
+                                data: jsonobject.polls,
+                                backgroundColor: [
+                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(255, 99, 132, 0.8)', 
+                                ],
+                                borderColor: [
+                                    'rgba(54, 162, 235, 0.8)',
+                                    'rgba(255, 99, 132, 0.8)',
+                                    
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                            }
+                        }
+                    });
+                </script>
+        </div>
+        <div class="col-md-4 bg-light">
+            <p class="text-justify lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum vel sequi veniam quis, soluta praesentium adipisci dolorem consequuntur aliquam corporis corrupti provident nisi omnis minima et laboriosam illo accusantium itaque, beatae architecto assumenda voluptas quidem. Temporibus neque, quo id eveniet fugit quasi ipsum soluta. Sit ullam, ut possimus doloremque ipsa voluptatibus perferendis quam maxime! Nisi explicabo quo eligendi esse, harum animi pariatur nobis ipsum ducimus repudiandae laudantium fugiat expedita quod minima maxime deserunt nulla quaerat cupiditate corrupti perferendis saepe eius!</p>
+        </div>
+        <div class="col-md-3 bg-light">
+            <div class="card text-center bg-success text-white mb-3 mr-3">
+                <div class="card-body">
+                    <h3>Complaints Registered</h3>
+                    <h4 class="display-4">
+                        <i class="fas fa-pencil-alt"></i>{{total_complaints}}
+                    </h4>
+
+                </div>
+            </div>
+            <div class="card text-center bg-warning text-white mb-3 mr-3">
+                <div class="card-body">
+                    <h3>Complaints Seen</h3>
+                    <h4 class="display-4">
+                        <i class="fas fa-eye"></i> {{viewed_complaints}}
+                    </h4>
+
+                </div>
+            </div>
+
+            <div class="card text-center bg-primary text-white mb-3 mr-3">
+                <div class="card-body">
+                    <h3>Max Complaints <i class="fas fa-chart-line"></i></h3>
+                    
+                            {% for id in max_id %}
+                            <h4>Constituency ID: {{id}}</h4>
+                            {% endfor %}
+                            <h4>Complaints:{{max_complaints}}</h4>
+                    
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+{% endblock %}

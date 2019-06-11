@@ -1,0 +1,56 @@
+{% extends "complaint/complaint_base.html" %}
+
+{% block content %}
+{% if jsondata %}
+
+<script>
+var jsonobject = JSON.parse('{{ jsondata | escapejs }}');
+
+var cc = jsonobject['const'];
+
+window.alert(`${cc} is not a valid constituency number.`);
+
+
+
+</script>
+{% endif %}
+    
+<header id="main-header" class="py-2 bg-primary text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fab fa-wpforms"></i>&nbsp; Analyse Constituency</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    
+    <br><br>
+    
+    
+    <section id="add_complaint_type">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <div class="card bg-light">
+                        <div class="card-header">
+                            <h4>Enter Constituency Number:</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{% url 'complaints:get_const_num' %}", method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="cons_no">Number:</label>
+                                    {{form.const}}
+                                </div>
+                                <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+    
+{% endblock %}

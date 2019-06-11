@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<header id="main-header" class="py-2 bg-danger text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fab fa-wpforms"></i> &nbsp;&nbsp;Add Complaint Type</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- ACTIONS -->
+    <br><br>
+    
+    
+    <section id="add_complaint_type">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Enter:</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{% url 'accounts:add_complaint_type' %}", method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="type">Type:</label>
+                                    {{form.type}}
+                                </div>
+                                <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+
+{% endblock %}

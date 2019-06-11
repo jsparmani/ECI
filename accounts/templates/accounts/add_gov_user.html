@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if jsondata %}
+
+<script>
+var jsonobject = JSON.parse('{{ jsondata | escapejs }}');
+
+var cc = jsonobject['username'];
+
+window.alert(`User with this ${cc} already exists.`);
+
+
+
+</script>
+{% endif %}
+{% comment %}
+<form action="{% url 'accounts:add_gov_user' %}", method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit">
+</form>
+{% endcomment %}
+
+<header id="main-header" class="py-2 bg-success text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fas fa-plus"></i> Add Gov User</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- ACTIONS -->
+    <br><br>
+    
+    <!-- LOGIN -->
+    <section id="add_gov_user">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{% url 'accounts:add_gov_user' %}", method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="username">Username:</label>
+                                    {{form.username}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    {{form.password}}
+                                </div>
+                                <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<header id="main-header" class="py-2 bg-danger text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fab fa-wpforms"></i> &nbsp;&nbsp;Details</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    
+    <br><br>
+    
+    
+    <section id="add_phone_num">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Enter Phone Number:</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{% url 'accounts:add_gov_user_phone' username=username %}", method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="type">Phone Number:</label>
+                                    {{form.phone_num}}
+                                </div>
+                                <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+{% endblock %}

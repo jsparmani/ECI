@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<header id="main-header" class="py-2 bg-warning text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fab fa-wpforms"></i> &nbsp;&nbsp;Add Details</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- ACTIONS -->
+    <br><br>
+    
+    
+    <section id="add_voter_details">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <div class="card bg-light">
+                        <div class="card-header">
+                            <h4>Voter Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{% url 'accounts:add_voter' username=username %}", method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="phone_num">Phone Number</label>
+                                    {{form.phone_num}}
+                                </div>
+                                
+                                <div class="form-group">
+                                        <label for="booth">Constituency Number:</label>
+                                        {{form.cons_no}}
+                                </div>
+                                <div class="form-group">
+                                        <label for="booth">Booth Number:</label>
+                                        {{form.booth_no}}
+                                </div>
+                                <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+{% endblock %}

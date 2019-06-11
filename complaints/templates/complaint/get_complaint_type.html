@@ -1,0 +1,43 @@
+{% extends "complaint/complaint_base.html" %}
+
+{% block content %}
+
+<header id="main-header" class="py-2 bg-success text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fab fa-wpforms"></i>&nbsp;Analyse by Type</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    
+    <br><br>
+    
+    <section id="get_complaint_type">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 mx-auto">
+                        <div class="card bg-light">
+                            <div class="card-header">
+                                <h4>Choose Complaint Type:</h4>
+                            </div>
+                            <div class="card-body">
+                                <form action="{% url 'complaints:get_type' %}", method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="type">Type:</label>
+                                        {{form.type}}
+                                    </div>
+                                    <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    
+
+{% endblock %}

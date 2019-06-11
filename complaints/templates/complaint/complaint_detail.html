@@ -1,0 +1,205 @@
+{% extends "complaint/complaint_base.html" %}
+
+{% block complaint_content %}
+<header id="main-header" class="py-2 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fas fa-info-circle"></i>&nbsp;&nbsp; Details </h1>
+                </div>
+            </dikv>
+        </div>
+    </header><br>
+<div class="container">
+
+
+<div class="card text-center bg-light">
+        <div class="card-header">
+               <b> Complaint ID:  {{complaint.pk}} </b>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title display-4">{{complaint.choice}}</h4>
+            <p class="card-text lead">Constituency No:{{complaint.user.voter_details.cons_no}}</p>
+            <p class="card-text lead">Booth No:{{complaint.user.voter_details.booth_no}}</p>
+            
+            <p class="card-text lead">{{complaint.description | safe}}</p>
+            {% if user.is_authenticated and not user.username in govname_list %}
+            <div class="row">
+                {% if complaint.is_liked == 0 %}
+                <div class="col-6">
+                        <a href="{% url 'complaints:like' pk=complaint.pk %}" style="color:#fff;"> <button  class="btn btn-block btn-success">  <i class="far fa-thumbs-up"></i></button></a>
+                </div>
+                {% else %}
+                <div class="col-6">
+                        <a href="{% url 'complaints:like' pk=complaint.pk %}" style="color:#fff;"> <button  class="btn btn-block btn-success">  <i class="fas fa-thumbs-up"></i></button></a>
+                </div>
+                {% endif %}
+                {% if complaint.is_disliked == 0 %}
+                <div class="col-6 pl-0">
+                <a href="{% url 'complaints:dislike' pk=complaint.pk %}" style="color:#fff;"><button class="btn btn-block btn-danger"><i class="far fa-thumbs-down"></i></button></a> 
+                </div>
+                {% else %}
+                <div class="col-6 pl-0">
+                        <a href="{% url 'complaints:dislike' pk=complaint.pk %}" style="color:#fff;"><button class="btn btn-block btn-danger"><i class="fas fa-thumbs-down"></i></button></a> 
+                </div>
+                {% endif %}
+            </div>
+            
+            {% endif %}
+            {% if user.is_authenticated and user.username in govname_list %}
+            <div class="row">
+                    {% if complaint.is_liked == 0 %}
+                    <div class="col-6">
+                             <button  class="btn btn-block btn-success">  <i class="far fa-thumbs-up"></i></button>
+                    </div>
+                    {% else %}
+                    <div class="col-6">
+                             <button  class="btn btn-block btn-success">  <i class="fas fa-thumbs-up"></i></button>
+                    </div>
+                    {% endif %} 
+                    {% if complaint.is_disliked == 0 %}
+                    <div class="col-6 pl-0">
+                    <button class="btn btn-block btn-danger"><i class="far fa-thumbs-down"></i></button> 
+                    </div>
+                    {% else %}
+                    <div class="col-6 pl-0">
+                            <button class="btn btn-block btn-danger"><i class="fas fa-thumbs-down"></i></button> 
+                    </div>
+                    {% endif %}
+            </div>
+            {% endif %}
+            <div id="accordion">
+                    <div class="card bg-light">
+                      <div class="card-header">
+                        <h5 class="card-title">
+                          <a href="#collapse1" data-parent="#accordion" data-toggle="collapse">
+                            View Files
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapse1" class="collapse">
+                            <div class="card-body">
+                                    {% if complaint.file_upload %}
+                                    <a href="{{ complaint.file_upload.url }}" target="_blank" class="btn btn-outline-primary">View File</a> &nbsp;
+                                    {% endif %}
+                                    {% if complaint.file_upload1 %}
+                                    <a href="{{ complaint.file_upload1.url }}" target="_blank" class="btn btn-outline-primary">View File</a> &nbsp;
+                                    {% endif %}
+                                    {% if complaint.file_upload2 %}
+                                    <a href="{{ complaint.file_upload2.url }}" target="_blank" class="btn btn-outline-primary">View File</a> &nbsp;
+                                    {% endif %}
+                                    {% if complaint.file_upload3 %}
+                                    <a href="{{ complaint.file_upload3.url }}" target="_blank" class="btn btn-outline-primary">View File</a> &nbsp;
+                                    {% endif %}
+                                    {% if complaint.file_upload4 %}
+                                    <a href="{{ complaint.file_upload4.url }}" target="_blank" class="btn btn-outline-primary">View File</a> &nbsp;
+                                    {% endif %}
+                                    {% if complaint.file_upload5 %}
+                                    <a href="{{ complaint.file_upload5.url }}" target="_blank" class="btn btn-outline-primary">View File</a> &nbsp;
+                                    {% endif %}
+                                    
+                            </div>
+                          </div>
+                        </div></div><br>    
+            <button class="btn btn-dark" href="#">
+                    {% if complaint.viewed_complaint == 1 %}
+                    Status: Seen
+                    {% else %}
+                    Status: Unseen
+                    {% endif %}
+            </button>
+        <br><br>
+        <div class="card-footer text-muted">
+            {{complaint.created_at}}
+        </div>
+    </div></div><br>
+    {% if user.is_authenticated and user.username in govname_list %}
+
+    <a href="{% url 'complaints:add_comment_to_complaint' pk=complaint.pk %}" style="color:white;"><button class="btn btn-success btn-block d-block mb-4">Add Comment</button></a>
+
+    {% endif %}
+    <button class="btn btn-primary btn-block d-block mb-4" data-toggle="collapse" data-target="#collapse-btn-1">View Comments</button>
+
+    <div class="collapse mb-5" id="collapse-btn-1">
+    {% for comment in complaint.comments.all %}
+    <div class="card bg-light">
+        <div class="card-body">
+            {{ comment.text|safe|linebreaks }}
+    </div></div>
+    {% empty %}
+    <div class="card bg-light">
+            <div class="card-body">
+                NO COMMENTS POSTED
+        </div></div>
+    
+{% endfor %}
+</div>
+{% comment %}
+<h1>{{ complaint.choice }}</h1>
+<h1>{{ complaint.user.voter_details.cons_no }}</h1>
+<h1>{{ complaint.user.voter_details.booth_no }}</h1>
+
+{% if complaint.viewed_complaint == 1 %}
+<h2>Status: Seen</h2>
+{% else %}
+<h2>Status: Unseen</h2>
+{% endif %}
+
+{% if user.is_authenticated and user.username in govname_list %}
+<h1>{{ complaint.user.username }}</h1>
+{% endif %}
+<p>{{ complaint.created_at }}</p>
+<p>{{ complaint.description }}</p>
+{% if complaint.file_upload %}
+<a href="{{ complaint.file_upload.url }}" target="_blank">View File</a>
+{% endif %}
+{% if complaint.file_upload1 %}
+<a href="{{ complaint.file_upload1.url }}" target="_blank">View File</a>
+{% endif %}
+{% if complaint.file_upload2 %}
+<a href="{{ complaint.file_upload2.url }}" target="_blank">View File</a>
+{% endif %}
+{% if complaint.file_upload3 %}
+<a href="{{ complaint.file_upload3.url }}" target="_blank">View File</a>
+{% endif %}
+{% if complaint.file_upload4 %}
+<a href="{{ complaint.file_upload4.url }}" target="_blank">View File</a>
+{% endif %}
+{% if complaint.file_upload5 %}
+<a href="{{ complaint.file_upload5.url }}" target="_blank">View File</a>
+{% endif %}
+
+{% if user.is_authenticated and not user.username in govname_list %}
+<p>Like: <a href="{% url 'complaints:like' pk=complaint.pk %}">{{complaint.is_liked}}</a></p>
+<p>Dislike: <a href="{% url 'complaints:dislike' pk=complaint.pk %}">{{complaint.is_disliked}}</a></p>
+{% endif %}
+
+{% if user.is_authenticated and user.username in govname_list %}
+<p>Like: {{complaint.is_liked}}</p>
+<p>Dislike: {{complaint.is_disliked}}</p>
+{% endif %}
+
+<h2>Comments</h2>
+
+{% if user.is_authenticated and user.username in govname_list %}
+
+<p><a href="{% url 'complaints:add_comment_to_complaint' pk=complaint.pk %}">Add Comment</a></p>
+
+{% endif %}
+
+{% for comment in complaint.comments.all %}
+    <ul>
+        <li>
+            <p>{{ comment.text|safe|linebreaks }}</p>
+            
+        </li>
+    </ul>
+    {% empty %}
+    <p>
+        NO COMMENTS POSTED!!!
+    </p>
+{% endfor %}
+{% endcomment %}
+{% endblock %}
+

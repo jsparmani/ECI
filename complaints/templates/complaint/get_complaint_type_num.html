@@ -1,0 +1,68 @@
+{% extends "complaint/complaint_base.html" %}
+
+{% block content %}
+
+{% if jsondata %}
+
+<script>
+var jsonobject = JSON.parse('{{ jsondata | escapejs }}');
+
+var cc = jsonobject['const'];
+
+window.alert(`${cc} is not a valid constituency number.`);
+
+
+
+</script>
+{% endif %}
+
+    
+<header id="main-header" class="py-2 bg-warning text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fab fa-wpforms"></i> &nbsp;&nbsp;Complaint List</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- ACTIONS -->
+    <br><br>
+    
+    <!-- LOGIN -->
+    <section id="view_special_list">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{% url 'complaints:get_type_num' %}", method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="const">Constituency Number:</label>
+                                    {{form.const}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="select_all">Select All</label>&nbsp;&nbsp;
+                                    <span>{{form.select_all}}</span>
+                                </div>
+                                <div class="form-group">
+                                        <label for="type">Type</label>
+                                        {{form.type}}
+                                </div>
+                                <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+
+
+{% endblock %}

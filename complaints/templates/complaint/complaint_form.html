@@ -1,0 +1,132 @@
+{% extends "complaint/complaint_base.html" %}
+{% block head %}
+{% endblock %}
+
+{% block complaint_content %}
+
+<header id="main-header" class="py-2 bg-success text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 align="center">
+                    <i class="fab fa-wpforms"></i>&nbsp;&nbsp; Complaint Form</h1>
+            </div>
+        </div>
+    </div>
+</header><br><br>
+<section id="details">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <div class="card bg-light">
+                <div class="card-header">
+                  <h4>File Complaint</h4>
+                </div>
+                <div class="card-body">
+
+                    <form enctype="multipart/form-data" method="POST">
+                        <br>
+                        <div class="container form-group">
+                            {% csrf_token %}
+                            <label for="choice">Choice</label>
+                            {{form.choice}}
+                            <br>
+                            <label for="description">Description</label>
+                            {{form.description}}<br><br>
+                            <label for="image">Upload Files</label>
+                            <div class="complaints">
+                                <div class="custom-file">
+                                    {{form.file_upload}}
+                                    {{form.file_upload_help_text}}
+                                    <label for="image" class="custom-file-label">Choose File</label>
+                                </div>
+                            </div>
+                            <a class="btn btn-outline-primary btn-small" id="add">Add More</a><br><br>
+
+                            <!-- {{form.as_p}} -->
+                            <input type="submit" value="File" class="btn btn-outline-dark btn-block">
+                        </div>
+
+                    </form>
+                    </div>
+                    </div>
+                    </div></div></div></section>
+
+
+<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+    integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+
+<script type='text/javascript'>
+    var count = 1;
+    document.getElementById('image').addEventListener('change', () => {
+                name = document.getElementsByName('image').value = document.getElementById('image').value;
+                fhtml = "<p> File Uploaded</p>"
+                document.querySelector('.complaints').insertAdjacentHTML('beforeend', fhtml)
+            });
+
+
+    document.querySelector('#add').addEventListener('click', () => {
+        if (count == 1) {
+            html = '<div class="custom-file">{{form.file_upload1}}<label for="image1" class="custom-file-label">Choose File</label></div><br>';
+
+            document.querySelector('.complaints').insertAdjacentHTML('beforeend', html);
+            document.getElementById('image1').addEventListener('change', () => {
+                name = document.getElementsByName('image1').value = document.getElementById('image1').value;
+                fhtml = "<p> File Uploaded</p>"
+                document.querySelector('.complaints').insertAdjacentHTML('beforeend', fhtml)
+            });
+            
+
+        }
+        else if (count == 2) {
+            html = '<div class="custom-file">{{form.file_upload2}}<label for="image2" class="custom-file-label">Choose File</label></div><br>';
+
+            document.querySelector('.complaints').insertAdjacentHTML('beforeend', html);
+            document.getElementById('image2').addEventListener('change', () => {
+                name = document.getElementsByName('image2').value = document.getElementById('image2').value;
+                fhtml = "<p> File Uploaded</p>"
+                document.querySelector('.complaints').insertAdjacentHTML('beforeend', fhtml)
+            });
+        }
+        else if (count == 3) {
+            html = '<div class="custom-file">{{form.file_upload3}}<label for="image3" class="custom-file-label">Choose File</label></div><br>';
+
+            document.querySelector('.complaints').insertAdjacentHTML('beforeend', html);
+            document.getElementById('image3').addEventListener('change', () => {
+                name = document.getElementsByName('image3').value = document.getElementById('image3').value;
+                fhtml = "<p> File Uploaded</p>"
+                document.querySelector('.complaints').insertAdjacentHTML('beforeend', fhtml)
+            });
+        }
+        else if (count == 4) {
+            html = '<div class="custom-file">{{form.file_upload4}}<label for="image4" class="custom-file-label">Choose File</label></div><br>';
+
+            document.querySelector('.complaints').insertAdjacentHTML('beforeend', html);
+            document.getElementById('image4').addEventListener('change', () => {
+                name = document.getElementsByName('image4').value = document.getElementById('image4').value;
+                fhtml = "<p> File Uploaded</p>"
+                document.querySelector('.complaints').insertAdjacentHTML('beforeend', fhtml)
+            });
+        }
+        else if (count == 5) {
+            html = '<div class="custom-file">{{form.file_upload5}}<label for="image5" class="custom-file-label">Choose File</label></div><br>';
+
+            document.querySelector('.complaints').insertAdjacentHTML('beforeend', html);
+            document.getElementById('image5').addEventListener('change', () => {
+                name = document.getElementsByName('image5').value = document.getElementById('image5').value;
+                fhtml = "<p> File Uploaded</p>"
+                document.querySelector('.complaints').insertAdjacentHTML('beforeend', fhtml)
+            });
+        }
+        count++;
+
+    });
+</script>
+
+{% endblock %}
